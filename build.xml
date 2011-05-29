@@ -1,0 +1,43 @@
+<project name="deeplinker" default="all" basedir=".">
+    <!-- Setup -->
+    <property name="SRC_DIR" value="src" description="Source folder" />
+    <property name="DIST_DIR" value="dist" description="Output folder for build targets" />
+    <property name="DIST_FILE" value="deeplinker.js" description="Output file name for build targets" />
+    <property name="DIST_MIN_FILE" value="deeplinker.min.js" description="Output file name for build targets" />
+    <property name="TASKS_DIR" value="tasks" description="Files needed to build" />
+    <property name="YUI" value="${TASKS_DIR}/yuicompressor-2.4.2.jar" description="YUICompressor" />
+
+    <!-- Targets -->
+    
+    <target name="combine">
+        <echo message="Merging files..."/>
+        <concat destfile="${DIST_DIR}/${DIST_FILE}">
+            <fileset dir="${SRC_DIR}" includes="utils.js"/>
+            <fileset dir="${SRC_DIR}" includes="*.js"/>            
+        </concat>
+        <echo message="Merging files DONE"/>
+    </target>
+
+    <target name="min" depends="combine" description="Minimize JavaScript files">
+        <echo message="Minify JS" />
+        <apply executable="java" parallel="false" verbose="true" dest="${DIST_DIR}">
+            <fileset dir="${DIST_DIR}" includes="${DIST_FILE}"/>
+            <arg line="-jar" />
+            <arg path="${YUI}" />
+            <arg value="--charset" />
+            <arg value="ANSI" />
+            <arg value="-o" />
+            <targetfile />
+            <mapper type="glob" from="${DIST_FILE}" to="${DIST_MIN_FILE}"/>
+        </apply>
+        <echo message="Minify JS DONE" />
+    </target>
+
+    <target name="destroy">
+        <delete dir="${DIST_DIR}" />
+    </target>
+
+    <target name="build" depends="destroy, combine, min">
+        <echo message="Build complete." />
+    </target>
+</project>

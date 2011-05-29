@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Deeplinker - Basic Example</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="../../dist/deeplinker.min.js"></script>
+        <script type="text/javascript">
+            window.onload = function (){
+                deeplinker.addRoute("/:link", gotoLink, [':link']);
+                deeplinker.init(window);
+            }
+            
+            function gotoLink(link){
+                var div = document.getElementById('outputdiv');
+                div.innerHTML = link;
+            }
+        </script>
+    </head>
+    <body>
+        <a href="#!/link1">Link 1</a>
+        <a href="#!/link2">Link 2</a>
+        <a href="#!/link3">Link 3</a>
+        <div id="outputdiv"></div>
+    </body>
+</html>

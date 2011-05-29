@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link type="text/css" rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="../../dist/deeplinker.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                deeplinker.addRoute("/:section", changeSection, [':section']);
+                deeplinker.init(window);
+            });
+            
+            function changeSection(section){
+                $(".section").removeClass("active");
+                
+                var sectionContent = $("#"+section+"-section");
+                if(sectionContent){
+                    sectionContent.addClass("active");
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="page">
+            <div id="header">
+                <h2>Deeplinker Navigation Example</h2>
+            </div>
+            <div class="navigation">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#!/home">Home</a></li>
+                    <li><a href="#!/who">Who we are</a></li>
+                    <li><a href="#!/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                <div id="home-section" class="section active">
+                    <h3>..:: HOME ::..</h3>
+                    <div id="lipsum">
+                        <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus enim, porttitor a venenatis dictum, vehicula ac justo. In blandit egestas sem, vel iaculis eros congue aliquam. Maecenas a lorem et sapien commodo condimentum vel eleifend massa. In mattis nulla sit amet tortor molestie id feugiat nibh convallis. Donec augue sapien, ultrices vitae tempus et, porta ac quam. Proin faucibus laoreet ipsum a iaculis. Vestibulum lacinia, lectus sed consectetur cursus, erat nunc mattis ligula, eget scelerisque turpis magna ut risus. Curabitur at purus odio. Nam vel urna vel dui aliquam sollicitudin eget quis turpis. Etiam in lectus vitae velit pulvinar interdum vel vel mauris. Aenean bibendum ullamcorper mauris in sodales. Etiam ipsum felis, aliquam quis rutrum ac, convallis at tellus. Pellentesque vel ipsum eget massa commodo pretium sit amet non felis. Integer vestibulum vulputate pretium. Nullam nisl elit, porta in bibendum in, luctus consectetur mauris. Cras ultrices congue nulla in ornare.
+                        </p>
+                        <p>
+                        Nullam adipiscing sagittis dolor id bibendum. Quisque varius, mauris eu mattis imperdiet, turpis metus aliquam purus, at bibendum arcu mi molestie libero. Maecenas at erat eget tortor molestie sagittis ac vitae purus. Sed quam leo, aliquam eget facilisis ut, blandit eu nunc. Vivamus purus diam, condimentum id aliquet sed, pharetra id lorem. Fusce nec lacus purus, sed laoreet diam. Aliquam sit amet arcu sit amet ante adipiscing interdum. Praesent sollicitudin nulla ut enim placerat commodo. Pellentesque hendrerit accumsan nisi a dapibus. Nulla egestas scelerisque quam, sit amet posuere lectus vulputate in. Curabitur gravida vulputate quam in tincidunt. In id orci tempus ante feugiat feugiat egestas et eros. Cras lacinia, lacus vitae accumsan tempus, neque eros ullamcorper orci, in feugiat nibh purus a sem. Cras consectetur elementum quam et porttitor. Ut semper pretium eros, quis volutpat augue consequat eget.
+                        </p>
+                        <p>
+                        Nullam adipiscing interdum massa, nec rutrum lorem vulputate non. Praesent sollicitudin nulla id arcu rhoncus ornare. In sed nulla nulla. Aenean ut vehicula dolor. In vestibulum elit vitae erat pellentesque interdum. Cras eu diam neque. Donec posuere malesuada sem. In sollicitudin felis id metus laoreet feugiat. Cras pretium venenatis risus, quis ultricies purus tempor nec. Praesent molestie tortor quis tortor placerat molestie vitae nec dui. Praesent ut lorem quis sem gravida sollicitudin. Nam ac massa dolor, vitae ullamcorper libero. Cras adipiscing cursus varius. Praesent facilisis quam nec ante pretium mattis. Sed nec sem nec nunc tempus ultricies eu sit amet neque.
+                        </p>
+                        <p>
+                        Curabitur diam felis, tincidunt ac ornare id, tempus in lorem. Vivamus a dui metus. Nullam dolor lacus, vulputate et scelerisque vitae, viverra in ipsum. Donec venenatis commodo eleifend. Maecenas nec quam aliquet tellus placerat euismod. Aliquam erat volutpat. Morbi massa libero, hendrerit at ullamcorper ut, accumsan quis dolor. Mauris felis est, rutrum sit amet facilisis ac, tristique facilisis nibh. Aenean a ante vel purus consequat semper lobortis vel lectus. Etiam vel elit quis est tempor imperdiet. Suspendisse purus neque, eleifend at ultricies eget, sodales in erat. Mauris vestibulum lorem ac metus sollicitudin varius. Aenean eleifend ligula nec turpis molestie id fringilla magna consequat.
+                        </p>
+                        <p>
+                        Suspendisse posuere lectus id diam laoreet volutpat. Sed nisi nibh, tempus id tincidunt ut, pellentesque imperdiet libero. Nam ultricies tempus magna, vel consequat nibh gravida sed. Integer viverra fringilla augue sed pretium. Nullam purus felis, facilisis condimentum tincidunt quis, imperdiet ac augue. Pellentesque ac enim lorem, ac aliquet felis. Suspendisse pharetra neque in sem laoreet sit amet scelerisque purus dapibus. Quisque augue nisl, volutpat ut imperdiet eu, gravida sit amet dui. Vivamus vel sapien mi, sed commodo erat. Aenean eu massa ligula. Maecenas egestas massa sed odio fringilla dapibus. Donec odio dolor, commodo a pharetra ac, porttitor commodo velit. Fusce volutpat sapien nec odio facilisis in gravida massa interdum. Sed at eros felis, auctor venenatis orci. Proin nisi risus, lobortis a aliquam ac, viverra vel orci. Vivamus dictum lorem in felis lobortis consequat. Nam vel diam urna, vel blandit dui.
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="who-section" class="section">
+                    <h3>..:: WHO WE ARE ::..</h3>
+                    <img src="who.jpg"></img>
+                    <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas tellus enim, porttitor a venenatis dictum, vehicula ac justo. In blandit egestas sem, vel iaculis eros congue aliquam. Maecenas a lorem et sapien commodo condimentum vel eleifend massa. In mattis nulla sit amet tortor molestie id feugiat nibh convallis. Donec augue sapien, ultrices vitae tempus et, porta ac quam. Proin faucibus laoreet ipsum a iaculis. Vestibulum lacinia, lectus sed consectetur cursus, erat nunc mattis ligula, eget scelerisque turpis magna ut risus. Curabitur at purus odio. Nam vel urna vel dui aliquam sollicitudin eget quis turpis. Etiam in lectus vitae velit pulvinar interdum vel vel mauris. Aenean bibendum ullamcorper mauris in sodales. Etiam ipsum felis, aliquam quis rutrum ac, convallis at tellus. Pellentesque vel ipsum eget massa commodo pretium sit amet non felis. Integer vestibulum vulputate pretium. Nullam nisl elit, porta in bibendum in, luctus consectetur mauris. Cras ultrices congue nulla in ornare.
+                    </p>
+                    <p>
+                    Nullam adipiscing sagittis dolor id bibendum. Quisque varius, mauris eu mattis imperdiet, turpis metus aliquam purus, at bibendum arcu mi molestie libero. Maecenas at erat eget tortor molestie sagittis ac vitae purus. Sed quam leo, aliquam eget facilisis ut, blandit eu nunc. Vivamus purus diam, condimentum id aliquet sed, pharetra id lorem. Fusce nec lacus purus, sed laoreet diam. Aliquam sit amet arcu sit amet ante adipiscing interdum. Praesent sollicitudin nulla ut enim placerat commodo. Pellentesque hendrerit accumsan nisi a dapibus. Nulla egestas scelerisque quam, sit amet posuere lectus vulputate in. Curabitur gravida vulputate quam in tincidunt. In id orci tempus ante feugiat feugiat egestas et eros. Cras lacinia, lacus vitae accumsan tempus, neque eros ullamcorper orci, in feugiat nibh purus a sem. Cras consectetur elementum quam et porttitor. Ut semper pretium eros, quis volutpat augue consequat eget.
+                    </p>
+                </div>
+                
+                <div id="contact-section" class="section">
+                    <h3>..:: CONTACT ::..</h3>
+                    <form>
+                        <fieldset>
+                            Name: <input type="text"><br>
+                            E-mail: <input type="text"><br>
+                            Message: <input type="textarea" height="300px">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <div id="footer">
+                <p>deeplinker by @matixfigueroa</p>
+            </div>
+        </div>
+    </body>
+</html>
