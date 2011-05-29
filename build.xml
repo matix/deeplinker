@@ -13,7 +13,7 @@
         <echo message="Merging files..."/>
         <concat destfile="${DIST_DIR}/${DIST_FILE}">
             <fileset dir="${SRC_DIR}" includes="utils.js"/>
-            <fileset dir="${SRC_DIR}" includes="*.js"/>            
+            <fileset dir="${SRC_DIR}" includes="deeplinker.js"/>            
         </concat>
         <echo message="Merging files DONE"/>
     </target>
