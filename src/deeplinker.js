@@ -1,23 +1,48 @@
 (function(window){
 
 window.deeplinker =  {
+    /** Routing tree structure holder */
     _routes:{},
+    /** Default callback function holder */
     _defaultCallback:null,
+    /** Hash checking interval Id holder*/
     _checkInterval:null,
+    /** Routing window reference holder */
     _window: null,
+    /** Href buffer*/
     _href:null,
+    /** Hash checking interval call time span */
     _updateRate:100,
     
-    init: function(routingWindow){
-        this._window =routingWindow;
+    /**
+     * initializes the deeplinking mechanism.
+     * 
+     * routingWindow: the window where routes will be looked up.
+     * 
+     * returns: undefined
+     */
+    init: function(/** DOMWindow */ routingWindow){
+        this._window = routingWindow;
         this._checkInterval = setInterval(_deeplinking_checkHash,this._updateRate);
     },
     
-    setDefaultCallback: function(callback){
+    /**
+     * Set a default function to be called when given route is not resolved 
+     * to any callback.
+     * 
+     * returns: undefined
+     */
+    setDefaultCallback: function(/** function */ callback){
         this._defaultCallback = callback;
     },
     
-    getRoute: function(href){
+    /**
+     * Util: get the hash url of a given URL. Returns false if 
+     * no route found.
+     * 
+     * returns: string or false
+     */
+    getRoute: function(/** string */ href){
         if(typeof href == "string"){
             var safeHref = href.split('?',2)[0];
             var hash = safeHref.split('#!',2)[1];
@@ -26,13 +51,26 @@ window.deeplinker =  {
         else return false;
     },
     
+    /**
+     * Util: get the base url of the current page.
+     * 
+     * returns: string
+     */
     getBasePath:function(){
         return  this._window.location.protocol 
                 +'//'+this._window.location.hostname 
                 + this._window.location.pathname;
     },
     
-    route: function(path){
+    /**
+     * Fire routing mechanism for a given path.
+     * If not callback was registered for the given path returns false.
+     * If the registered callback produces an error, it is fowarded via
+     * console.error
+     * 
+     * returns: true or false
+     */
+    route: function(/** string */path){
         var unfilteredPathItems = path.split("/");
         var pathItems = [];
         utils.forEach(unfilteredPathItems, function(item){
@@ -66,6 +104,43 @@ window.deeplinker =  {
         return true;
     },
     
+    /**
+     * Register a route callback.
+     * 
+     * path: the route to register. A route is a ficticious path that fires
+             * a given callback. It uses the following syntax:
+             *  > relative:  path/to/something
+             *               path/:with/:aguments
+             *  > absolute:  /path/to/something
+             *               /path/:with/:arguments             
+             * 
+     * callback: a reference to a method to call with the respective 
+                 * arguments when the registered path is adressed.
+                 * Can be defined in several ways:
+                 *  > function: a reference to a function or an inline 
+                 *              anonymous function definition.
+                 *  > scoped function: a reference to a function and a 
+                 *                     reference to a scope where the 
+                 *                     execution of that function will 
+                 *                     refer (this object).
+                 *                     Should be passed as an object:
+                 *                     {scope:ScopeObject, 
+                 *                      method:functionReference}
+                 *                     ScopeObject can be either a function 
+                 *                     reference or a string representing a 
+                 *                     member of the scope object that holds
+                 *                     the function.
+                 * > string with code: a string containig code to be 
+                 *                     evaluated. In this case arguments 
+                 *                     will be ignored.
+     * args: the definition of the arguments to be passed to the callback 
+             * when the registered path is adressed. Should be passed as 
+             * an array where every value is passed as it is defined to the 
+             * callback function except strings starting with ":", wich are 
+             * resolved to argument definitions in the given path.
+             * 
+     * returns: undefined
+     */
     addRoute: function (path, callback, args){
         var unfilteredPathItems = path.split("/");
         var pathItems = [];
@@ -78,6 +153,13 @@ window.deeplinker =  {
         _deeplinking_tree_set(this._routes, pathItems, value);
     },
     
+    /**
+     * Remove route callback for a given path.
+     * 
+     * path: the path to remove from the routing tree.
+     * 
+     * returns: undefined
+     */
     removeRoute: function (path){
         var unfilteredPathItems = path.split("/");
         var pathItems = [];
@@ -90,6 +172,8 @@ window.deeplinker =  {
     }
 };
 
+//private: recursively walks down the routing three  following the given path 
+//until finds a callback. Returns false if no callback found.
 function _deeplinking_tree_run(root, path) {
     if(path.length > 0){
         if(typeof root[path[0]] != "undefined"){
@@ -103,6 +187,8 @@ function _deeplinking_tree_run(root, path) {
     else return root;
 }
 
+//private: recursively walks down the routing three  following the given path 
+//and sets a callback in the final position.
 function _deeplinking_tree_set(root, path, value, originalPath) {
     if(typeof originalPath == "undefined"){
         originalPath = [];
@@ -128,6 +214,7 @@ function _deeplinking_tree_set(root, path, value, originalPath) {
     }
 }
 
+//private: resolve callback arguments if with values passed in the path.
 function _deeplinking_process_arguments(declaredArgs, declaredPathItems, pathItems ){
     var args = [];
     utils.forEach(declaredArgs, function (arg){
@@ -135,6 +222,9 @@ function _deeplinking_process_arguments(declaredArgs, declaredPathItems, pathIte
             var pathItemIdx = utils.indexOf(declaredPathItems,arg);
             if(pathItemIdx > -1){
                 args.push(pathItems[pathItemIdx]);
+            }
+            else{
+                args.push(undefined);
             }
         }
         else{
@@ -144,6 +234,8 @@ function _deeplinking_process_arguments(declaredArgs, declaredPathItems, pathIte
     return args;
 }
 
+//private: constalty check the hash path in the location of the routing window
+//given and fire deeplinkig mechanism if registered route found.
 function _deeplinking_checkHash(){
     var oldhref = deeplinker._href;
     var newhref = deeplinker._window.location.href;
@@ -159,6 +251,8 @@ function _deeplinking_checkHash(){
     }
 }
 
+// private: create a callback function proxy to be called given a callback in 
+// any of the supported format. Return false if invalid format.
 function _deeplinking_resolveCallback(callback, args){
     if(typeof callback == "function"){
         return function(){
@@ -171,9 +265,17 @@ function _deeplinking_resolveCallback(callback, args){
         }
     }
     else if (typeof callback == "object" && typeof callback.scope != "undefined"){
-        return function(){
-            callback.scope[callback.method].apply(callback.scope,args);
+        if(typeof callback.method == "string"){
+            return function(){
+                callback.scope[callback.method].apply(callback.scope,args);
+            }
         }
+        else if (typeof callback.method == "function"){
+            return function(){
+                callback.method.apply(callback.scope,args);
+            }
+        }
+        else return false;
     }
     else{
         return false;
