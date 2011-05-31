@@ -1,0 +1,4 @@
+To test this example you will need to copy the examples folder to /var/www/
+or some other location where you can acces them through a server like Apache
+http://httpd.apache.org/
+Otherwise it won't work accessing it directly from the file system.

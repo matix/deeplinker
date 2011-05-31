@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link type="text/css" rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="../jquery.js"></script>
+        <script type="text/javascript" src="../../dist/deeplinker.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                deeplinker.addRoute("/:section", changeSection, [':section']);
+		        deeplinker.setDefaultCallback(goHome);
+                deeplinker.init(window);
+            });
+            
+            function changeSection(section) {          
+                var sectionContent = $(".content");
+                if(sectionContent){
+                    sectionContent.load(section, function(response) {
+	                   sectionContent.html = response;	
+		            });
+                }
+            }
+
+	        function goHome() {
+		        $(".content").load('sec1.html', function() {
+	                           sectionContent.html = response;	
+		        });
+	        }
+        </script>
+    </head>
+    <body>
+        <div class="page">
+            <div id="header">
+                <h2>Deeplinker Ajax Navigation Example</h2>
+            </div>
+            <div class="navigation">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="#!/sec1.html">Home</a></li>
+                    <li><a href="#!/sec2.html">Who we are</a></li>
+                    <li><a href="#!/sec3.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="content">
+		Choose any link
+            </div>
+            <div id="footer">
+                <p>deeplinker by @matixfigueroa</p>
+            </div>
+        </div>
+    </body>
+</html>
