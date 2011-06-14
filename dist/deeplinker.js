@@ -76,7 +76,7 @@ window.deeplinker =  {
      */
     init: function(/** DOMWindow */ routingWindow){
         this._window = routingWindow;
-        this._checkInterval = setInterval(_deeplinking_checkHash,this._updateRate);
+        this._checkInterval = setInterval(_checkHash,this._updateRate);
     },
     
     /**
@@ -131,12 +131,12 @@ window.deeplinker =  {
                 pathItems.push(item);
             }
         });
-        var routeItem = _deeplinking_tree_run(this._routes, pathItems);
+        var routeItem = _tree_run(this._routes, pathItems);
         if(routeItem){
             var routeCallback = routeItem.callback;
-            var callbackArgs = _deeplinking_process_arguments(routeItem.args, routeItem.path, pathItems);
+            var callbackArgs = _process_arguments(routeItem.args, routeItem.path, pathItems);
             
-            var callable = _deeplinking_resolveCallback(routeCallback, callbackArgs);
+            var callable = _resolveCallback(routeCallback, callbackArgs);
             if(callable != false){
                 try{
                     callable();
@@ -203,7 +203,7 @@ window.deeplinker =  {
             }
         });
         var value = {callback:callback, args:args};
-        _deeplinking_tree_set(this._routes, pathItems, value);
+        _tree_set(this._routes, pathItems, value);
     },
     
     /**
@@ -221,19 +221,19 @@ window.deeplinker =  {
                 pathItems.push(item);
             }
         });
-        _deeplinking_tree_set(this._routes, pathItems, null);
+        _tree_set(this._routes, pathItems, null);
     }
 };
 
 //private: recursively walks down the routing three  following the given path 
 //until finds a callback. Returns false if no callback found.
-function _deeplinking_tree_run(root, path) {
+function _tree_run(root, path) {
     if(path.length > 0){
         if(typeof root[path[0]] != "undefined"){
-            return _deeplinking_tree_run(root[path[0]], path.slice(1));
+            return _tree_run(root[path[0]], path.slice(1));
         }
         else if (typeof root["*"] != "undefined"){
-            return _deeplinking_tree_run(root["*"], path.slice(1));
+            return _tree_run(root["*"], path.slice(1));
         }
         else return false
     }
@@ -242,7 +242,7 @@ function _deeplinking_tree_run(root, path) {
 
 //private: recursively walks down the routing three  following the given path 
 //and sets a callback in the final position.
-function _deeplinking_tree_set(root, path, value, originalPath) {
+function _tree_set(root, path, value, originalPath) {
     if(typeof originalPath == "undefined"){
         originalPath = [];
     }
@@ -255,7 +255,7 @@ function _deeplinking_tree_set(root, path, value, originalPath) {
         if(typeof root[pathItem] == 'undefined'){
             root[pathItem] = {};
         }
-        _deeplinking_tree_set(root[pathItem], path, value, originalPath);
+        _tree_set(root[pathItem], path, value, originalPath);
     }
     else {
         originalPath.push(path[0]);
@@ -268,7 +268,7 @@ function _deeplinking_tree_set(root, path, value, originalPath) {
 }
 
 //private: resolve callback arguments if with values passed in the path.
-function _deeplinking_process_arguments(declaredArgs, declaredPathItems, pathItems ){
+function _process_arguments(declaredArgs, declaredPathItems, pathItems ){
     var args = [];
     utils.forEach(declaredArgs, function (arg){
         if(typeof arg == "string" && arg.indexOf(":") == 0){
@@ -289,7 +289,7 @@ function _deeplinking_process_arguments(declaredArgs, declaredPathItems, pathIte
 
 //private: constalty check the hash path in the location of the routing window
 //given and fire deeplinkig mechanism if registered route found.
-function _deeplinking_checkHash(){
+function _checkHash(){
     var oldhref = deeplinker._href;
     var newhref = deeplinker._window.location.href;
     if(oldhref != newhref){
@@ -306,7 +306,7 @@ function _deeplinking_checkHash(){
 
 // private: create a callback function proxy to be called given a callback in 
 // any of the supported format. Return false if invalid format.
-function _deeplinking_resolveCallback(callback, args){
+function _resolveCallback(callback, args){
     if(typeof callback == "function"){
         return function(){
             callback.apply(window,args);
