@@ -21,7 +21,7 @@ window.deeplinker =  {
      * 
      * returns: undefined
      */
-    init: function(/** DOMWindow */ routingWindow, /** */ updateRate){
+    init: function(/** DOMWindow */ routingWindow, /** Number */ updateRate){
         this._window = routingWindow;
         this._checkInterval = setInterval(_checkHash, (updateRate || this._updateRate));
     },
