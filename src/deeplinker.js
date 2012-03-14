@@ -11,8 +11,8 @@ window.deeplinker =  {
     _window: null,
     /** Href buffer*/
     _href:null,
-    /** Hash checking interval call time span */
-    _updateRate:100,
+    /** Hash checking interval call default time span */
+    _defaultUpdateRate:100,
     
     /**
      * initializes the deeplinking mechanism.
@@ -21,9 +21,9 @@ window.deeplinker =  {
      * 
      * returns: undefined
      */
-    init: function(/** DOMWindow */ routingWindow){
+    init: function(/** DOMWindow */ routingWindow, /** */ updateRate){
         this._window = routingWindow;
-        this._checkInterval = setInterval(_checkHash,this._updateRate);
+        this._checkInterval = setInterval(_checkHash, (updateRate || this._updateRate));
     },
     
     /**
