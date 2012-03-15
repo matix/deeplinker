@@ -11,8 +11,10 @@ window.deeplinker =  {
     _window: null,
     /** Href buffer*/
     _href:null,
-    /** Hash checking interval call time span */
-    _updateRate:100,
+    /** Hash checking interval call default time span */
+    _defaultUpdateRate:100,
+    /** Flag that determines wether deeplinker is paused */
+    _paused: false,
     
     /**
      * initializes the deeplinking mechanism.
@@ -21,9 +23,9 @@ window.deeplinker =  {
      * 
      * returns: undefined
      */
-    init: function(/** DOMWindow */ routingWindow){
+    init: function(/** DOMWindow */ routingWindow, /** Number */ updateRate){
         this._window = routingWindow;
-        this._checkInterval = setInterval(_checkHash,this._updateRate);
+        this._checkInterval = setInterval(_checkHash, (updateRate || this._defaultUpdateRate));
     },
     
     /**
@@ -169,6 +171,33 @@ window.deeplinker =  {
             }
         });
         _tree_set(this._routes, pathItems, null);
+    },
+
+    /**
+     * Pauses the hash checking function.
+     *
+     * returns: undefined
+     */
+    pause : function () {
+        this._paused = true;
+    },
+
+    /**
+     * Resumes the hash checking function.
+     *
+     * returns: undefined
+     */
+    resume : function () {
+        this._paused = false;
+    },
+
+    /**
+     * Checks wether deeplinker is paused or not.
+     *
+     * returns: true if paused, false otherwise.
+     */
+    isPaused : function() {
+        return this._paused;
     }
 };
 
@@ -237,6 +266,7 @@ function _process_arguments(declaredArgs, declaredPathItems, pathItems ){
 //private: constalty check the hash path in the location of the routing window
 //given and fire deeplinkig mechanism if registered route found.
 function _checkHash(){
+    if (deeplinker._paused) return;
     var oldhref = deeplinker._href;
     var newhref = deeplinker._window.location.href;
     if(oldhref != newhref){
