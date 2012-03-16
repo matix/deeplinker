@@ -27,7 +27,7 @@ window.deeplinker =  {
         this._window = routingWindow;
 
         // Modern browsers can detect hash changes so we don't need to be pulling window.location.href constantly.
-        if ('onhashchange' in this._window) {
+        if ('onhashchange' in this._window && typeof updateRate === "undefined") {
             this._window.addEventListener('hashchange', _checkHash, false);
         } else {
             this._checkInterval = setInterval(_checkHash, (updateRate || this._defaultUpdateRate));
