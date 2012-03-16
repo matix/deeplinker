@@ -25,7 +25,13 @@ window.deeplinker =  {
      */
     init: function(/** DOMWindow */ routingWindow, /** Number */ updateRate){
         this._window = routingWindow;
-        this._checkInterval = setInterval(_checkHash, (updateRate || this._defaultUpdateRate));
+
+        // Modern browsers can detect hash changes so we don't need to be pulling window.location.href constantly.
+        if ('onhashchange' in this._window) {
+            this._window.addEventListener('hashchange', _checkHash, false);
+        } else {
+            this._checkInterval = setInterval(_checkHash, (updateRate || this._defaultUpdateRate));
+        }
     },
     
     /**
