@@ -1,4 +1,4 @@
-<project name="deeplinker" default="all" basedir=".">
+<project name="deeplinker" default="min" basedir=".">
     <!-- Setup -->
     <property name="SRC_DIR" value="src" description="Source folder" />
     <property name="DIST_DIR" value="dist" description="Output folder for build targets" />
