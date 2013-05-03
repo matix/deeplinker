@@ -17,7 +17,7 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['lib/*.js'],
+        src: ['extra/prefix.js', 'lib/*.js', "extra/suffix.js"],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -57,7 +57,7 @@ module.exports = function(grunt) {
     },
     jasmine: {
       "source": {
-        src: 'lib/**/*.js',
+        src: '<%= concat.dist.dest %>',
         options: {
           specs: 'test/*-spec.js',
           helpers: 'test/*-helper.js'
@@ -84,6 +84,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'jasmine', 'concat', 'uglify']);
+  grunt.registerTask('default', [/*'jshint',*/ 'jasmine', 'concat', 'uglify']);
 
 };
