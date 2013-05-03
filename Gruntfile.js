@@ -17,7 +17,13 @@ module.exports = function(grunt) {
         stripBanners: true
       },
       dist: {
-        src: ['extra/prefix.js', 'lib/*.js', "extra/suffix.js"],
+        src: [
+          'extra/prefix.js',
+          'node_modules/underscore/underscore.js',
+          'lib/utils.js',
+          'lib/*.js', 
+          'extra/suffix.js'
+        ],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -45,7 +51,9 @@ module.exports = function(grunt) {
         eqnull: true,
         browser: true,
         globals: {
-          jQuery: true
+          jQuery: true,
+          _: true,
+          global: true
         }
       },
       "gruntfile": {
@@ -84,6 +92,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('default', [/*'jshint',*/ 'jasmine', 'concat', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'jasmine', 'concat', 'uglify']);
 
 };
