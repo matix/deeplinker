@@ -1,4 +1,4 @@
-var Base = _.ns("deeplinker.Router.Base");
+var Base = deeplinker.Router.Base;
 
 describe("Router.Base", function(){
 
