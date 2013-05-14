@@ -20,7 +20,8 @@ module.exports = function(grunt) {
         src: [
           'extra/prefix.js',
           'lib/utils.js',
-          'lib/*.js', 
+          'lib/*.js',
+          'lib/exports.js',
           'extra/suffix.js'
         ],
         dest: 'dist/<%= pkg.name %>.js'
