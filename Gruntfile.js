@@ -19,7 +19,6 @@ module.exports = function(grunt) {
       dist: {
         src: [
           'extra/prefix.js',
-          'node_modules/underscore/underscore.js',
           'lib/utils.js',
           'lib/*.js', 
           'extra/suffix.js'
@@ -60,15 +59,19 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       "source": {
-        src: ['lib/**/*.js', 'test/**/*.js']
+        src: ['lib/**/*.js']
       }
     },
     jasmine: {
       "source": {
         src: '<%= concat.dist.dest %>',
         options: {
+          keepRunner:true,
           specs: 'test/*-spec.js',
-          helpers: 'test/*-helper.js'
+          helpers: [
+            'node_modules/underscore/underscore.js',
+            'test/*-helper.js'
+          ]
         }
       }
     },
@@ -92,6 +95,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'jasmine', 'concat', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'concat', 'jasmine', 'uglify']);
 
 };

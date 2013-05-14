@@ -1,3 +1,5 @@
+.grunt
+_SpecRunner.html
 .DS_Store
 node_modules
 dist
