@@ -34,4 +34,26 @@ describe("Router.Base", function(){
 
     expect(router.handlers.length).toBe(2);
   });
+
+  it("executes a registered handler given a path", function () {
+    var executed = false;
+    router.addHandler("test/path", function () {
+      executed = true;
+    });
+
+    router.navigate("test/path");
+
+    expect(executed).toBe(true);
+  });
+
+  it("executes a registered handler given a path, and correctly passes arguments", function () {
+    var executed = false;
+    router.addHandler("test/:arg1/:arg2/test/:arg3", function (arg1, arg2, arg3) {
+      expect(arg1).toBe("value1");
+      expect(arg2).toBe("value2");
+      expect(arg3).toBe("value3");
+    });
+
+    router.navigate("test/value1/value2/test/value3");
+  });
 });
