@@ -82,8 +82,12 @@ module.exports = function(grunt) {
         tasks: ['jshint:gruntfile']
       },
       "source": {
-        files: '<%= jshint."source".src %>',
-        tasks: ['jshint:"source"', 'qunit']
+        files: '<%= jshint.source.src %>',
+        tasks: ['jshint:source', 'jasmine']
+      },
+      "test": {
+        files: '<%= jasmine.source.options.specs %>',
+        tasks: ['jasmine']
       }
     }
   });
